@@ -174,9 +174,15 @@ export default function TaskSection(props: Props) {
               value={formData.priority}
               onChange={handleChange}
             >
-              <MenuItem value="low">LOW</MenuItem>
-              <MenuItem value="medium">MEDIUM</MenuItem>
-              <MenuItem value="high">HIGH</MenuItem>
+              <MenuItem value="low">
+                <Typography color="primary">LOW</Typography>
+              </MenuItem>
+              <MenuItem value="medium">
+                <Typography color="warning">MEDIUM</Typography>
+              </MenuItem>
+              <MenuItem value="high">
+                <Typography color="error">HIGH</Typography>
+              </MenuItem>
             </TextField>
           </Grid2>
 

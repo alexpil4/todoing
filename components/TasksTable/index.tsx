@@ -17,7 +17,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DoneIcon from '@mui/icons-material/Done';
 import CelebrationOutlinedIcon from '@mui/icons-material/CelebrationOutlined';
-import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
+import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
 
 interface Props {
   tasks: TaskItem[];
@@ -48,7 +48,7 @@ export default function TasksTable(props: Props) {
 
     return (
       <Tooltip title={`${value} priority `}>
-        <ErrorOutlineOutlinedIcon color={color} />
+        <RocketLaunchIcon color={color} />
       </Tooltip>
     );
   };
