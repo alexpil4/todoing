@@ -1,4 +1,3 @@
-'use client';
 import { TaskItem } from '../../types/Task';
 
 import {

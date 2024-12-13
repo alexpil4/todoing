@@ -1,9 +1,11 @@
 import TasksSummary from '@/containers/TasksSummary/page';
+import { readTasks } from './actions';
 
-export default function TaskSummary() {
+export default async function TaskSummary() {
+  const tasks = await readTasks();
   return (
     <main>
-      <TasksSummary />
+      <TasksSummary initialTasks={tasks} />
     </main>
   );
 }

@@ -1,14 +1,16 @@
 'use client';
-import { useState, useEffect } from 'react';
-
+import { useState } from 'react';
+import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import { Fab, CircularProgress, Backdrop, Tooltip, Box } from '@mui/material';
 
-import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
-
+import { createTask, updateTask, deleteTask } from './actions';
 import { TaskItem, TaskItemToAdd, TaskItemToEdit } from '../../types/Task';
 import TasksTable from '@/components/TasksTable';
 import TaskSection from '@/components/TaskSection';
 
+interface Props {
+  initialTasks: TaskItem[];
+}
 interface ShowTask {
   show: boolean;
   task?: TaskItem;
@@ -18,108 +20,51 @@ const showTaskInitialState = {
   show: false,
 };
 
-export default function TasksSummary() {
+export default function TasksSummary({ initialTasks }: Props) {
   // Internal state
-  const [taskList, setTaskList] = useState<TaskItem[]>([]);
+  const [taskList, setTaskList] = useState<TaskItem[]>(initialTasks);
   const [showTask, setShowTask] = useState<ShowTask>(showTaskInitialState);
   const [loading, setLoading] = useState<boolean>(false);
 
-  // GET tasks
-  const fetchTasks = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/tasks`);
-      if (!response.ok) throw new Error('Error fetching tasks');
-
-      const tasks = await response.json();
-      setTaskList(tasks);
-    } catch (error) {
-      console.error('Error loading tasks:', error);
-    }
-    setLoading(false);
-  };
-
+  // CREATE task
   const handleSubmit = async (task: TaskItemToAdd) => {
     setLoading(true);
-    // POST task
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/add-task`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(task),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        // If task is successfully added, add it to the state
-        setTaskList((prevList) => [...prevList, data]);
-        setShowTask(showTaskInitialState);
-      } else {
-        // If error occurs, show the error message
-        console.error(data.message);
-      }
+      const newTask = await createTask(task);
+      setTaskList((prevList) => [...prevList, newTask]);
+      setShowTask(showTaskInitialState);
     } catch (error) {
-      console.error('Error posting task:', error);
+      console.error('Error adding task:', error);
     }
     setLoading(false);
   };
 
-  // EDIT task
-  const editTask = async (task: TaskItemToEdit) => {
-    const { _id } = task;
-
+  // UPDATE task
+  const handleUpdateTask = async (task: TaskItemToEdit) => {
+    setLoading(true);
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/edit-task`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(task),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        // If task is successfully updated, delete the old one and
-        //  add the new one to the state
-        setTaskList((prevList) =>
-          prevList.map((prevTask) => (prevTask._id === data._id ? data : prevTask)),
-        );
-        setShowTask(showTaskInitialState);
-      } else {
-        console.error('Error updating task');
-      }
+      const updatedTask = await updateTask(task);
+      setTaskList((prevList) =>
+        prevList.map((prevTask) => (prevTask._id === updatedTask._id ? updatedTask : prevTask)),
+      );
+      setShowTask(showTaskInitialState);
     } catch (error) {
-      console.error(`Error fetching the update for selected task ${_id}`, error);
+      console.error('Error editing task:', error);
     }
+    setLoading(false);
   };
 
   // DELETE task
-  const deleteTask = async (id: string) => {
+  const handleDeleteTask = async (id: string) => {
+    setLoading(true);
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/delete-task`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ _id: id }),
-      });
-      if (response.ok) {
-        setTaskList((prevTasks) => prevTasks.filter((task) => task._id !== id));
-      } else {
-        console.error('Error deleting task');
-      }
+      await deleteTask(id);
+      setTaskList((prevTasks) => prevTasks.filter((task) => task._id !== id));
     } catch (error) {
-      console.error(`Error fetching the delete for selected task ${id}`, error);
+      console.error('Error deleting task:', error);
     }
+    setLoading(false);
   };
-
-  useEffect(() => {
-    fetchTasks();
-  }, []);
 
   const handleCancel = () => setShowTask(showTaskInitialState);
 
@@ -146,7 +91,7 @@ export default function TasksSummary() {
       )}
       <TaskSection
         submit={handleSubmit}
-        editTask={editTask}
+        editTask={handleUpdateTask}
         isOpen={showTask.show}
         task={showTask.task}
         handleClose={handleCancel}
@@ -155,8 +100,8 @@ export default function TasksSummary() {
       {taskList.length > 0 && (
         <TasksTable
           tasks={taskList}
-          handleDone={editTask}
-          handleDeleteTask={deleteTask}
+          handleDone={handleUpdateTask}
+          handleDeleteTask={handleDeleteTask}
           handleEditTask={(task) => showTaskSection(task)}
         />
       )}
