@@ -1,3 +1,4 @@
+'use client';
 import { Suspense } from 'react';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import BarChartIcon from '@mui/icons-material/BarChart';
@@ -7,8 +8,9 @@ import { AppProvider } from '@toolpad/core/nextjs';
 import LinearProgress from '@mui/material/LinearProgress';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
 import { PageContainer } from '@toolpad/core/PageContainer';
-import theme from '../theme';
 import { Roboto } from 'next/font/google';
+
+import theme from '../theme';
 
 const roboto = Roboto({
   weight: ['300', '400', '500', '700'],

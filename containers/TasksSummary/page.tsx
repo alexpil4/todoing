@@ -2,11 +2,14 @@
 import { useState } from 'react';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import { Fab, CircularProgress, Backdrop, Tooltip, Box } from '@mui/material';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+
+import TasksTable from '@/components/TasksTable';
+import TaskSection from '@/components/TaskSection';
 
 import { createTask, updateTask, deleteTask } from './actions';
 import { TaskItem, TaskItemToAdd, TaskItemToEdit } from '../../types/Task';
-import TasksTable from '@/components/TasksTable';
-import TaskSection from '@/components/TaskSection';
 
 interface Props {
   initialTasks: TaskItem[];
@@ -83,7 +86,7 @@ export default function TasksSummary({ initialTasks }: Props) {
     );
 
   return (
-    <>
+    <LocalizationProvider dateAdapter={AdapterMoment}>
       {taskList.length === 0 && (
         <Box display="flex" justifyContent="center" alignItems="center" height="50vh">
           Ops, still not task here!
@@ -123,6 +126,6 @@ export default function TasksSummary({ initialTasks }: Props) {
           </Fab>
         </Tooltip>
       )}
-    </>
+    </LocalizationProvider>
   );
 }
