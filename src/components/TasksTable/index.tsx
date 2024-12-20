@@ -15,8 +15,6 @@ import {
 
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import DoneIcon from '@mui/icons-material/Done';
-import CelebrationOutlinedIcon from '@mui/icons-material/CelebrationOutlined';
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
 
 interface Props {
@@ -62,7 +60,8 @@ export default function TasksTable(props: Props) {
               <Tooltip title="time slot">
                 <TableCell>
                   <Typography color="primary">
-                    {task.fromTime} - {task.toTime}
+                    {task.fromTime}
+                    {task.toTime && ` - ${task.toTime}`}
                   </Typography>
                 </TableCell>
               </Tooltip>
@@ -70,24 +69,20 @@ export default function TasksTable(props: Props) {
                 <TableCell>{task.description}</TableCell>
               </Tooltip>
               <TableCell>{handlePriority(task.priority)}</TableCell>
-              <TableCell>
-                {task.completed ? (
-                  <Chip
-                    label="Completed"
-                    onDelete={() => console.log('d')}
-                    deleteIcon={<CelebrationOutlinedIcon />}
-                    color="success"
-                  />
-                ) : (
-                  <Chip
-                    label="Pending"
-                    onClick={() => handleDone({ ...task, completed: true })}
-                    onDelete={() => console.log('Completed')}
-                    deleteIcon={<DoneIcon />}
-                    variant="outlined"
-                  />
-                )}
-              </TableCell>
+              <Tooltip title="status">
+                <TableCell>
+                  {task.completed ? (
+                    <Chip label="COMPLETED" color="success" />
+                  ) : (
+                    <Chip
+                      label="PENDING"
+                      onClick={() => handleDone({ ...task, completed: true })}
+                      variant="outlined"
+                      color="primary"
+                    />
+                  )}
+                </TableCell>
+              </Tooltip>
 
               <TableCell align="right">
                 <IconButton onClick={() => handleEditTask(task)} aria-label="edit">

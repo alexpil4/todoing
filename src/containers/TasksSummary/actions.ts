@@ -5,6 +5,7 @@ import { TaskItem, TaskItemToAdd, TaskItemToEdit } from '@/types/Task';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
+// CREATE
 export async function createTask(task: TaskItemToAdd): Promise<TaskItem> {
   const res = await fetch(`${API_URL}/add-task`, {
     method: 'POST',
@@ -15,6 +16,7 @@ export async function createTask(task: TaskItemToAdd): Promise<TaskItem> {
   return res.json();
 }
 
+// UPDATE
 export async function updateTask(task: TaskItemToEdit): Promise<TaskItem> {
   const res = await fetch(`${API_URL}/edit-task`, {
     method: 'PUT',
@@ -25,6 +27,7 @@ export async function updateTask(task: TaskItemToEdit): Promise<TaskItem> {
   return res.json();
 }
 
+// DELETE
 export async function deleteTask(id: string): Promise<void> {
   const res = await fetch(`${API_URL}/delete-task`, {
     method: 'DELETE',
