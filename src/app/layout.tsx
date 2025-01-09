@@ -1,8 +1,11 @@
 'use client';
 import { Suspense } from 'react';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
+
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import BarChartIcon from '@mui/icons-material/BarChart';
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
+import HistoryIcon from '@mui/icons-material/History';
+
 import type { Navigation } from '@toolpad/core';
 import { AppProvider } from '@toolpad/core/nextjs';
 import LinearProgress from '@mui/material/LinearProgress';
@@ -29,6 +32,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       segment: '',
       title: 'Task summary',
       icon: <DashboardIcon />,
+    },
+    {
+      segment: 'history',
+      title: 'Task history',
+      icon: <HistoryIcon />,
     },
     {
       segment: 'statistics',

@@ -1,5 +1,6 @@
 export interface TaskItem {
   _id: string;
+  username: string;
   description: string;
   priority: string;
   completed: boolean;

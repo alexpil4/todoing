@@ -33,6 +33,7 @@ interface Props {
 }
 
 const formInitialState = {
+  username: '',
   description: '',
   priority: '',
   completed: false,

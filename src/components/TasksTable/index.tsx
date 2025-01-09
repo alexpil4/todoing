@@ -1,6 +1,5 @@
-import { TaskItem } from '../../types/Task';
-
 import {
+  Avatar,
   Table,
   TableBody,
   TableCell,
@@ -16,6 +15,9 @@ import {
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
+
+import { TaskItem } from '../../types/Task';
+import SearchBar from './../SearchBar';
 
 interface Props {
   tasks: TaskItem[];
@@ -53,10 +55,16 @@ export default function TasksTable(props: Props) {
 
   return (
     <TableContainer component={Paper}>
+      <SearchBar tasks={tasks} />
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableBody>
           {tasks.map((task: TaskItem) => (
             <TableRow key={task._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+              <Tooltip title="username">
+                <TableCell>
+                  <Avatar src="https://i.ytimg.com/vi/iCQ0dJ6nJXo/maxresdefault.jpg">LP</Avatar>
+                </TableCell>
+              </Tooltip>
               <Tooltip title="time slot">
                 <TableCell>
                   <Typography color="primary">
