@@ -1,8 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers } from 'redux';
+
+import userReducer from './features/user/userSlice';
+
+const rootReducer = combineReducers({
+  // Define a top-level states
+  user: userReducer,
+});
 
 export const makeStore = () => {
   return configureStore({
-    reducer: {},
+    reducer: rootReducer,
   });
 };
 
