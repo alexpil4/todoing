@@ -12,6 +12,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
 import { PageContainer } from '@toolpad/core/PageContainer';
 import { Roboto } from 'next/font/google';
+import StoreProvider from './StoreProvider';
 
 import theme from '../theme';
 
@@ -52,15 +53,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={roboto.variable}>
-        <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-          <Suspense fallback={<LinearProgress />}>
-            <AppProvider theme={theme} navigation={NAVIGATION} branding={BRANDING}>
-              <DashboardLayout>
-                <PageContainer>{children}</PageContainer>
-              </DashboardLayout>
-            </AppProvider>
-          </Suspense>
-        </AppRouterCacheProvider>
+        <StoreProvider>
+          <AppRouterCacheProvider options={{ enableCssLayer: true }}>
+            <Suspense fallback={<LinearProgress />}>
+              <AppProvider theme={theme} navigation={NAVIGATION} branding={BRANDING}>
+                <DashboardLayout>
+                  <PageContainer>{children}</PageContainer>
+                </DashboardLayout>
+              </AppProvider>
+            </Suspense>
+          </AppRouterCacheProvider>
+        </StoreProvider>
       </body>
     </html>
   );
